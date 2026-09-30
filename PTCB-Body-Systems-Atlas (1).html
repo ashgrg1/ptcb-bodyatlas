@@ -1,0 +1,450 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>PTCB Body Systems Atlas</title><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: study-atlas — clickable body figure on the left, system detail sheet on the right, drug-suffix quiz below */
+:root{
+  --bg:#F2F6F7; --panel:#FFFFFF; --ink:#13262B; --muted:#56696E; --line:#D3DEE0;
+  --accent:#0E7C7B; --accent-soft:#DDEFEE; --skin:#E3EAEC; --skin-edge:#B9C8CB;
+  --good:#1F8A4C; --bad:#C0392B;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Figtree", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+  --r:12px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1618; --panel:#152023; --ink:#E3EDEE; --muted:#93A7AB; --line:#27383C;
+  --accent:#43B9B3; --accent-soft:#16373A; --skin:#1F2D30; --skin-edge:#3A5055;
+  --good:#4CC67F; --bad:#EF6F61; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1618; --panel:#152023; --ink:#E3EDEE; --muted:#93A7AB; --line:#27383C;
+  --accent:#43B9B3; --accent-soft:#16373A; --skin:#1F2D30; --skin-edge:#3A5055;
+  --good:#4CC67F; --bad:#EF6F61; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 var(--f-body);padding-inline:16px;padding-block:20px 48px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:clamp(1.7rem,4vw,2.5rem);font-weight:800}
+h2{font-size:1.45rem;font-weight:700}
+h3{font-size:1rem;font-weight:700}
+.eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.sub{color:var(--muted);max-width:62ch;margin:.35rem 0 0}
+header{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:16px}
+.finder{position:relative;flex:1 1 280px;max-width:380px}
+.finder label{font-size:.78rem;font-weight:600;color:var(--muted);display:block;margin-bottom:4px}
+.finder input{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);font:inherit}
+.finder input:focus{outline:none;border-color:var(--accent)}
+.hits{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;min-height:0}
+.hit{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:3px 10px;font-size:.8rem;cursor:pointer;font-family:inherit}
+.hit b{font-weight:700}
+.hit:hover,.hit:focus-visible{border-color:var(--accent);outline:none}
+
+/* system chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:flex;align-items:center;gap:7px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:6px 12px 6px 9px;font:600 .85rem var(--f-body);cursor:pointer}
+.chip i{width:11px;height:11px;border-radius:50%;background:var(--c)}
+.chip[aria-pressed="true"]{border-color:var(--c);background:color-mix(in srgb,var(--c) 14%,var(--panel))}
+.chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.main{display:grid;grid-template-columns:minmax(260px,340px) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:820px){.main{grid-template-columns:1fr}}
+.figure{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px)}
+@media (max-width:820px){.figure{position:static}}
+.figure svg{width:100%;height:auto;display:block;max-height:78vh}
+.figure .hint{font-size:.8rem;color:var(--muted);text-align:center;margin:6px 0 0}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font-size:.78rem;font-weight:600;padding:3px 8px;border-radius:6px;white-space:nowrap;transform:translate(-50%,-130%)}
+
+.skin{fill:var(--skin);stroke:var(--skin-edge);stroke-width:1.5}
+.organ{cursor:pointer;transition:opacity .2s, transform .2s;stroke:var(--panel);stroke-width:1.2}
+.organ:hover,.organ:focus-visible{outline:none;filter:brightness(1.12)}
+svg.has-sel .organ{opacity:.22}
+svg.has-sel .organ.on{opacity:1}
+svg.has-sel .skin.on{stroke:var(--c-int);stroke-width:4}
+.organ.pick{stroke:var(--ink);stroke-width:2}
+.bone{fill:none;stroke-linecap:round}
+.zlabel{font:600 7px var(--f-body);fill:var(--ink)}
+.zline{stroke:var(--muted);stroke-width:.6}
+
+.sheet{display:flex;flex-direction:column;gap:18px;min-width:0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.syshead{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:18px;align-items:center}
+@media (max-width:560px){.syshead{grid-template-columns:1fr}}
+.syshead .dot{display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--c);margin-right:8px;vertical-align:1px}
+.zoom{background:color-mix(in srgb,var(--c) 7%,var(--panel));border-radius:10px;border:1px solid var(--line)}
+.zoom svg{width:100%;height:auto;display:block}
+.plain{margin:.5rem 0 0;color:var(--ink)}
+.parts{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.part{font-size:.82rem;border-radius:6px;padding:3px 9px;background:color-mix(in srgb,var(--c) 13%,transparent);border:1px solid color-mix(in srgb,var(--c) 35%,transparent);cursor:pointer;color:var(--ink);font-family:inherit}
+.part.pick{background:var(--c);color:#fff;border-color:var(--c)}
+.partinfo{margin-top:10px;font-size:.9rem;color:var(--muted);min-height:1.4em}
+.partinfo b{color:var(--ink)}
+
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:18px}
+@media (max-width:980px){.grid2{grid-template-columns:1fr}}
+.roots{display:flex;flex-direction:column;gap:0;margin-top:10px}
+.root{display:grid;grid-template-columns:110px 1fr;gap:10px;padding:7px 0;border-top:1px solid var(--line);font-size:.9rem}
+.root:first-child{border-top:0}
+.root code,.suffix{font-family:var(--f-mono);font-weight:700;color:var(--accent)}
+.tablewrap{overflow-x:auto;margin-top:10px}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th{text-align:left;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:6px 8px;border-bottom:1.5px solid var(--line)}
+td{padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
+tr.flash td{background:var(--accent-soft)}
+.suffix{white-space:nowrap}
+.ex{color:var(--ink)}
+.use{color:var(--muted);font-size:.82rem}
+.sched{display:inline-block;font:700 .66rem var(--f-mono);padding:1px 5px;border-radius:4px;background:var(--bad);color:#fff;margin-left:4px;vertical-align:1px}
+.ptip{display:flex;gap:12px;align-items:flex-start;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.92rem}
+.ptip strong{font-family:var(--f-display);color:var(--accent);white-space:nowrap}
+
+/* overview strip */
+.overview{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.ov{text-align:left;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:10px;padding:10px 12px;cursor:pointer;color:var(--ink);font-family:inherit}
+.ov:hover,.ov:focus-visible{border-color:var(--c);outline:none}
+.ov h3{font-size:.95rem}
+.ov p{margin:2px 0 0;font-size:.8rem;color:var(--muted)}
+.ov .sx{font-family:var(--f-mono);font-size:.74rem;color:var(--accent);margin-top:4px}
+
+/* quiz */
+.quiz{display:grid;grid-template-columns:minmax(0,1fr) 200px;gap:18px}
+@media (max-width:700px){.quiz{grid-template-columns:1fr}}
+.q{font-family:var(--f-display);font-size:1.2rem;font-weight:700;margin:6px 0 12px}
+.q .mono{font-family:var(--f-mono);color:var(--accent)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media (max-width:480px){.opts{grid-template-columns:1fr}}
+.opt{padding:11px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);font:600 .92rem var(--f-body);text-align:left;cursor:pointer}
+.opt:hover:not(:disabled),.opt:focus-visible{border-color:var(--accent);outline:none}
+.opt.right{border-color:var(--good);background:color-mix(in srgb,var(--good) 14%,var(--panel))}
+.opt.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,var(--panel))}
+.opt:disabled{cursor:default}
+.fb{min-height:1.5em;margin-top:10px;font-size:.92rem}
+.btn{margin-top:10px;padding:10px 16px;border:0;border-radius:10px;background:var(--accent);color:var(--bg);font:700 .9rem var(--f-body);cursor:pointer}
+.btn:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.score{display:flex;flex-direction:column;gap:10px;font-variant-numeric:tabular-nums}
+.stat{border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.stat span{display:block;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.stat b{font-family:var(--f-display);font-size:1.6rem}
+.bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+footer{font-size:.8rem;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">Pharmacy Technician · PTCE Study</div>
+      <h1>Body Systems Atlas</h1>
+      <p class="sub">Tap any organ on the body. You will see its system, the medical root words, and the drug classes that treat it. Drug-name endings (suffixes) are the fastest way to guess a drug's class on the exam.</p>
+    </div>
+    <div class="finder">
+      <label for="find">Find a drug or root word</label>
+      <input id="find" type="search" placeholder="Try lisinopril, -prazole, nephr/o" autocomplete="off">
+      <div class="hits" id="hits"></div>
+    </div>
+  </header>
+
+  <div class="chips" id="chips" role="group" aria-label="Body systems"></div>
+
+  <div class="main">
+    <div class="figure" id="figure">
+      <div id="bodyMain"></div>
+      <p class="hint">Tap an organ · dashed shapes sit behind other organs</p>
+      <div class="tip" id="tip" hidden></div>
+    </div>
+
+    <div class="sheet">
+      <section class="card">
+        <div class="syshead">
+          <div>
+            <div class="eyebrow" id="sEyebrow">System</div>
+            <h2 id="sName"></h2>
+            <p class="plain" id="sPlain"></p>
+            <div class="parts" id="sParts"></div>
+            <div class="partinfo" id="sPartInfo">Tap a body part to see what it does.</div>
+          </div>
+          <div class="zoom" id="sZoom" aria-label="Close-up of this system"></div>
+        </div>
+      </section>
+
+      <div class="grid2">
+        <section class="card">
+          <h3>Root words</h3>
+          <div class="roots" id="sRoots"></div>
+        </section>
+        <section class="card">
+          <h3>Drug classes to know</h3>
+          <div class="tablewrap"><table>
+            <thead><tr><th>Class</th><th>Ending</th><th>Examples</th></tr></thead>
+            <tbody id="sDrugs"></tbody>
+          </table></div>
+        </section>
+      </div>
+
+      <div class="ptip"><strong>Exam tip</strong><span id="sTip"></span></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="eyebrow">All 11 systems at a glance</div>
+    <div class="overview" id="overview" style="margin-top:10px"></div>
+  </section>
+
+  <section class="card">
+    <div class="quiz">
+      <div>
+        <div class="eyebrow">Practice quiz · 10 questions per round</div>
+        <div class="q" id="qText"></div>
+        <div class="opts" id="qOpts"></div>
+        <div class="fb" id="qFb"></div>
+        <button class="btn" id="qNext" type="button" hidden>Next question</button>
+      </div>
+      <div class="score">
+        <div class="stat"><span>This round</span><b id="qScore">0 / 0</b><div class="bar"><i id="qBar"></i></div></div>
+        <div class="stat"><span>Best round</span><b id="qBest">–</b></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>Study aid only. Drug examples are common representatives of each class, not a complete list. Schedule marks follow the federal DEA schedules.</footer>
+</div>
+
+<script>
+const S = [
+ {id:"cardio",name:"Cardiovascular",c:"#D64545",plain:"Pumps blood through the body, carrying oxygen and nutrients to every cell.",
+  parts:{heart:"Muscle that pumps blood. Four chambers: 2 atria (top) and 2 ventricles (bottom).",vessels:"Arteries carry blood away from the heart; veins bring it back."},
+  roots:[["cardi/o","heart"],["angi/o","vessel"],["vas/o","vessel, duct"],["arteri/o","artery"],["ven/o, phleb/o","vein"],["hem/o, hemat/o","blood"],["thromb/o","clot"]],
+  drugs:[["Beta blockers","-olol","metoprolol, atenolol, propranolol","High blood pressure, heart rate"],["ACE inhibitors","-pril","lisinopril, enalapril, benazepril","High blood pressure, heart failure"],["ARBs","-sartan","losartan, valsartan, olmesartan","High blood pressure"],["Calcium channel blockers","-dipine","amlodipine, nifedipine","High blood pressure, angina"],["Statins","-statin","atorvastatin, simvastatin, rosuvastatin","High cholesterol"],["Anticoagulants","-xaban","apixaban, rivaroxaban, warfarin","Prevent blood clots"]],
+  tip:"Warfarin is a high-alert drug with a narrow therapeutic index. Its antidote is vitamin K. ACE inhibitors can cause a dry cough; ARBs usually do not.",
+  vb:"70 125 120 110"},
+ {id:"resp",name:"Respiratory",c:"#3A86C8",plain:"Brings oxygen in and pushes carbon dioxide out.",
+  parts:{lungs:"Two spongy organs where oxygen enters the blood. The right lung has 3 lobes, the left has 2.",trachea:"The windpipe. It splits into the left and right bronchi."},
+  roots:[["pulmon/o","lung"],["pneum/o","lung, air"],["bronch/o","bronchus (airway)"],["trache/o","windpipe"],["rhin/o, nas/o","nose"],["-pnea","breathing"]],
+  drugs:[["Short-acting bronchodilators (SABA)","-terol","albuterol, levalbuterol","Rescue inhaler for asthma attacks"],["Long-acting bronchodilators (LABA)","-terol","salmeterol, formoterol","Daily asthma/COPD control"],["Inhaled corticosteroids","-sone, -nide","fluticasone, budesonide","Reduce airway swelling"],["Leukotriene modifiers","-lukast","montelukast","Asthma, allergies"],["Anticholinergics","-tropium","tiotropium, ipratropium","COPD"]],
+  tip:"Albuterol is the rescue inhaler. Patients should rinse their mouth after inhaled steroids to prevent thrush (oral yeast infection).",
+  vb:"70 100 120 125"},
+ {id:"neuro",name:"Nervous",c:"#8E5CC8",plain:"The body's control center. Sends signals for thinking, feeling and movement.",
+  parts:{brain:"Controls thought, memory, emotion and body functions.",spinal:"The spinal cord carries messages between the brain and the body."},
+  roots:[["neur/o","nerve"],["encephal/o","brain"],["cerebr/o","cerebrum (brain)"],["myel/o","spinal cord, bone marrow"],["-algia","pain"],["-plegia","paralysis"]],
+  drugs:[["SSRIs (antidepressants)","-oxetine, -aline","fluoxetine, sertraline, escitalopram","Depression, anxiety"],["Benzodiazepines","-azepam, -azolam","lorazepam, alprazolam, diazepam","Anxiety, seizures",4],["Opioid analgesics","-codone, -morphone","oxycodone, hydrocodone, morphine","Severe pain",2],["Anticonvulsants","varies","levetiracetam, lamotrigine, gabapentin","Seizures, nerve pain"],["Triptans","-triptan","sumatriptan, rizatriptan","Migraine"]],
+  tip:"Opioids like oxycodone are Schedule II: no refills, and a new prescription is needed each time. Benzodiazepines are Schedule IV.",
+  vb:"65 5 130 160"},
+ {id:"gi",name:"Digestive (GI)",c:"#E08A1E",plain:"Breaks food down, absorbs nutrients, and removes waste.",
+  parts:{stomach:"Mixes food with acid and enzymes.",liver:"Largest internal organ. Makes bile and processes (metabolizes) most drugs.",pancreas:"Makes digestive enzymes and the hormones insulin and glucagon.",intestines:"Small intestine absorbs nutrients; large intestine (colon) absorbs water."},
+  roots:[["gastr/o","stomach"],["hepat/o","liver"],["enter/o","small intestine"],["col/o","colon"],["esophag/o","esophagus"],["chol/e","bile, gall"],["-emesis","vomiting"]],
+  drugs:[["Proton pump inhibitors (PPIs)","-prazole","omeprazole, pantoprazole, esomeprazole","Heartburn, GERD, ulcers"],["H2 blockers","-tidine","famotidine, cimetidine","Heartburn, ulcers"],["Antiemetics","-setron","ondansetron","Nausea, vomiting"],["Laxatives","varies","docusate, senna, polyethylene glycol","Constipation"]],
+  tip:"The liver metabolizes most drugs, so liver disease can cause drug buildup. \"Hepatotoxic\" means harmful to the liver, for example too much acetaminophen.",
+  vb:"70 195 120 140"},
+ {id:"endo",name:"Endocrine",c:"#C4A117",plain:"Glands that release hormones to control growth, energy and blood sugar.",
+  parts:{thyroid:"Butterfly-shaped gland in the neck. Controls metabolism (how fast the body uses energy).",pancreasE:"Its islet cells make insulin, which lowers blood sugar.",adrenal:"Adrenal glands sit on top of the kidneys and make adrenaline and cortisol."},
+  roots:[["thyr/o","thyroid"],["aden/o","gland"],["glyc/o, gluc/o","sugar"],["-emia","blood condition"],["hyper-","above normal"],["hypo-","below normal"]],
+  drugs:[["Insulins","-lin","insulin lispro, aspart, glargine","Diabetes (lowers blood sugar)"],["Biguanides","none","metformin","Type 2 diabetes, first choice"],["Sulfonylureas","gli-/gly-","glipizide, glyburide, glimepiride","Type 2 diabetes"],["DPP-4 inhibitors","-gliptin","sitagliptin, linagliptin","Type 2 diabetes"],["SGLT2 inhibitors","-gliflozin","empagliflozin, dapagliflozin","Type 2 diabetes, heart failure"],["GLP-1 agonists","-glutide","semaglutide, liraglutide","Type 2 diabetes, weight"],["Thyroid hormone","none","levothyroxine","Hypothyroidism"]],
+  tip:"Insulin is a high-alert medication. Unopened insulin goes in the refrigerator. Levothyroxine is taken on an empty stomach in the morning.",
+  vb:"70 85 120 200"},
+ {id:"renal",name:"Urinary (Renal)",c:"#1E9E8F",plain:"Filters waste from the blood and removes it as urine.",
+  parts:{kidneys:"Two bean-shaped filters behind the other organs. They also remove many drugs from the body.",bladder:"Stores urine."},
+  roots:[["nephr/o","kidney"],["ren/o","kidney"],["cyst/o","bladder"],["ur/o","urine"],["-uria","urine condition"],["olig-","scanty, few"]],
+  drugs:[["Loop diuretics","-semide, -etanide","furosemide, bumetanide","Swelling (edema), heart failure"],["Thiazide diuretics","-thiazide","hydrochlorothiazide (HCTZ), chlorthalidone","High blood pressure"],["Potassium-sparing diuretics","none","spironolactone","Heart failure, keeps potassium"],["Alpha blockers","-osin","tamsulosin, doxazosin","Enlarged prostate (BPH)"],["Bladder antispasmodics","varies","oxybutynin, tolterodine","Overactive bladder"]],
+  tip:"Diuretics are \"water pills.\" Loop and thiazide diuretics lower potassium; spironolactone raises it. \"Nephrotoxic\" drugs can harm the kidneys.",
+  vb:"70 240 120 120"},
+ {id:"msk",name:"Musculoskeletal",c:"#7A8A99",plain:"Bones, muscles and joints that support the body and let it move.",
+  parts:{bones:"206 bones in an adult. They support the body and store calcium.",muscles:"Muscles pull on bones to create movement.",joints:"Where bones meet, such as the knee and hip."},
+  roots:[["oste/o","bone"],["my/o","muscle"],["arthr/o","joint"],["chondr/o","cartilage"],["-itis","inflammation"],["-malacia","softening"]],
+  drugs:[["NSAIDs","-profen, varies","ibuprofen, naproxen, meloxicam","Pain, inflammation"],["Muscle relaxants","varies","cyclobenzaprine, methocarbamol, baclofen","Muscle spasms"],["Bisphosphonates","-dronate","alendronate, risedronate","Osteoporosis"],["Gout agents","varies","allopurinol, colchicine","Gout"]],
+  tip:"Alendronate: take with a full glass of water and stay upright for 30 minutes. NSAIDs can upset the stomach, so take them with food.",
+  vb:"30 100 200 460"},
+ {id:"skin",name:"Integumentary",c:"#C77966",plain:"Skin, hair and nails. The body's outer protective layer.",
+  parts:{skinP:"The largest organ. It protects the body, controls temperature and senses touch."},
+  roots:[["derm/o, dermat/o","skin"],["cutane/o","skin"],["onych/o","nail"],["trich/o","hair"],["myc/o","fungus"],["kerat/o","hard, horny tissue"]],
+  drugs:[["Topical corticosteroids","-sone, -olone","hydrocortisone, triamcinolone, clobetasol","Rash, itching, eczema"],["Topical antifungals","-conazole","clotrimazole, ketoconazole","Athlete's foot, ringworm"],["Topical antibiotics","varies","mupirocin, bacitracin","Minor skin infections"],["Retinoids","-tinoin","tretinoin","Acne"]],
+  tip:"\"Transdermal\" means through the skin, like a nicotine or fentanyl patch. Topical means applied to the skin surface.",
+  vb:"0 0 260 560"},
+ {id:"immune",name:"Immune / Lymphatic",c:"#4CAF50",plain:"Defends the body against germs and drains extra fluid.",
+  parts:{spleen:"Filters blood and helps fight infection.",nodes:"Lymph nodes trap germs. They swell when you are sick."},
+  roots:[["lymph/o","lymph"],["splen/o","spleen"],["immun/o","immune"],["path/o","disease"],["-cyte","cell"],["leuk/o","white"]],
+  drugs:[["Antihistamines","varies","loratadine, cetirizine, diphenhydramine","Allergies"],["Penicillins","-cillin","amoxicillin, penicillin VK","Bacterial infections"],["Cephalosporins","cef-, ceph-","cephalexin, ceftriaxone","Bacterial infections"],["Macrolides","-thromycin","azithromycin, clarithromycin","Bacterial infections"],["Fluoroquinolones","-floxacin","ciprofloxacin, levofloxacin","Bacterial infections"],["Antivirals","-vir","acyclovir, valacyclovir, oseltamivir","Viral infections"]],
+  tip:"Antibiotics treat bacteria, not viruses. Check for a penicillin allergy; some patients also react to cephalosporins.",
+  vb:"70 85 120 280"},
+ {id:"repro",name:"Reproductive",c:"#D6569A",plain:"Organs that make hormones and allow reproduction.",
+  parts:{reproP:"Includes the uterus and ovaries (female) and the testes and prostate (male)."},
+  roots:[["gynec/o","woman"],["hyster/o","uterus"],["oophor/o","ovary"],["orchi/o","testis"],["prostat/o","prostate"],["mamm/o, mast/o","breast"]],
+  drugs:[["Oral contraceptives","varies","ethinyl estradiol/levonorgestrel, norethindrone","Birth control"],["Estrogens","-diol","estradiol","Menopause symptoms"],["PDE5 inhibitors","-afil","sildenafil, tadalafil","Erectile dysfunction"],["5-alpha reductase inhibitors","-steride","finasteride, dutasteride","Enlarged prostate, hair loss"]],
+  tip:"Pregnant women should not handle crushed or broken finasteride tablets. Some antibiotics may make birth control pills less effective.",
+  vb:"70 290 120 100"},
+ {id:"eent",name:"Eyes & Ears",c:"#2F6FB0",plain:"The special senses of sight and hearing.",
+  parts:{eyes:"Take in light and send images to the brain.",ears:"Detect sound and help with balance."},
+  roots:[["ophthalm/o","eye"],["ocul/o","eye"],["ot/o","ear"],["aur/o","ear"],["opt/o","vision"],["-cusis","hearing"]],
+  drugs:[["Prostaglandin analogs","-prost","latanoprost, bimatoprost","Glaucoma (eye pressure)"],["Ophthalmic beta blockers","-olol","timolol","Glaucoma"],["Ophthalmic antibiotics","-floxacin","moxifloxacin, ofloxacin","Pink eye (bacterial)"],["Otic drops","varies","ciprofloxacin/dexamethasone otic","Ear infection"]],
+  tip:"Ophthalmic = eye, otic = ear. Eye drops can go in the ear, but ear drops must never go in the eye. Know OD/OS/OU (eyes) and AD/AS/AU (ears); ISMP lists them as error-prone, so pharmacies may spell them out.",
+  vb:"80 15 100 60"}
+];
+const SYS = Object.fromEntries(S.map(s=>[s.id,s]));
+
+/* organ shapes: [sys, partKey, label, svg, labelAt] */
+const O = [
+ ["neuro","brain","Brain",'<ellipse cx="130" cy="44" rx="28" ry="20"/>',[130,44]],
+ ["neuro","spinal","Spinal cord",'<rect x="127.5" y="92" width="5" height="230" rx="2.5" stroke-dasharray="3 2"/>',[134,300]],
+ ["eent","eyes","Eyes",'<circle cx="117" cy="62" r="4.5"/><circle cx="143" cy="62" r="4.5"/>',[143,62]],
+ ["eent","ears","Ears",'<ellipse cx="92" cy="60" rx="5" ry="9"/><ellipse cx="168" cy="60" rx="5" ry="9"/>',[168,60]],
+ ["endo","thyroid","Thyroid",'<path d="M118 100 q6 -8 12 0 q6 -8 12 0 q-6 9 -12 3 q-6 6 -12 -3z"/>',[142,100]],
+ ["resp","trachea","Trachea",'<rect x="126" y="106" width="8" height="34" rx="3"/>',[134,120]],
+ ["resp","lungs","Lungs",'<path d="M124 138 C110 130 86 140 84 175 C82 200 90 212 106 212 C120 212 124 200 124 185Z"/><path d="M136 138 C150 130 174 140 176 175 C178 200 170 212 154 212 C142 212 136 205 136 196Z"/>',[176,170]],
+ ["cardio","heart","Heart",'<path d="M137 204 C120 192 118 178 128 172 C134 168 138 172 140 176 C142 172 148 168 154 172 C162 180 156 194 137 204Z"/>',[154,186]],
+ ["cardio","vessels","Blood vessels",'<path d="M140 176 C140 150 150 140 158 128" fill="none" stroke-width="3"/><path d="M106 350 L100 520 M154 350 L160 520 M72 175 L62 330 M188 175 L198 330" fill="none" stroke-width="2.4"/>',[160,520]],
+ ["gi","liver","Liver",'<path d="M86 222 C90 212 120 210 142 214 C146 220 140 236 124 242 C108 248 90 244 86 222Z"/>',[90,230]],
+ ["gi","stomach","Stomach",'<path d="M142 222 C150 212 172 214 172 232 C172 252 156 262 140 256 C134 250 146 246 150 240 C152 234 146 230 142 222Z"/>',[170,236]],
+ ["immune","spleen","Spleen",'<ellipse cx="178" cy="226" rx="6" ry="11"/>',[184,226]],
+ ["gi","pancreas","Pancreas",'<path d="M114 258 C124 252 148 252 160 256 C152 262 124 264 114 258Z"/>',[160,258]],
+ ["endo","pancreasE","Pancreas (islets)",'<circle cx="134" cy="258" r="3"/><circle cx="146" cy="257" r="2.4"/>',[146,257]],
+ ["renal","kidneys","Kidneys",'<path d="M100 262 c-10 2 -12 24 0 28 c6 1 6 -6 3 -8 c-3 -3 -3 -9 0 -12 c3 -2 3 -9 -3 -8z" stroke-dasharray="3 2"/><path d="M160 262 c10 2 12 24 0 28 c-6 1 -6 -6 -3 -8 c3 -3 3 -9 0 -12 c-3 -2 -3 -9 3 -8z" stroke-dasharray="3 2"/>',[166,276]],
+ ["endo","adrenal","Adrenal glands",'<path d="M96 258 l5 -7 l5 7z"/><path d="M154 258 l5 -7 l5 7z"/>',[164,254]],
+ ["gi","intestines","Intestines",'<path d="M98 272 C98 266 162 266 162 272 L164 318 C164 326 96 326 96 318Z"/><path d="M108 282 h44 M108 294 h44 M108 306 h44" fill="none" stroke-width="1.6" opacity=".6"/>',[164,300]],
+ ["renal","bladder","Bladder",'<ellipse cx="130" cy="338" rx="14" ry="10"/>',[144,338]],
+ ["repro","reproP","Reproductive organs",'<path d="M118 352 c4 -4 20 -4 24 0 c-2 10 -20 10 -24 0z"/><circle cx="112" cy="350" r="3.5"/><circle cx="148" cy="350" r="3.5"/>',[148,356]],
+ ["immune","nodes","Lymph nodes",'<circle cx="112" cy="100" r="3.2"/><circle cx="148" cy="100" r="3.2"/><circle cx="84" cy="138" r="3.2"/><circle cx="176" cy="138" r="3.2"/><circle cx="106" cy="344" r="3.2"/><circle cx="154" cy="344" r="3.2"/>',[176,138]],
+ ["msk","muscles","Muscles",'<ellipse cx="66" cy="190" rx="8" ry="22"/><ellipse cx="194" cy="190" rx="8" ry="22"/><ellipse cx="108" cy="410" rx="11" ry="34"/><ellipse cx="152" cy="410" rx="11" ry="34"/>',[194,190]],
+ ["msk","bones","Bones",'<path class="bone" stroke-width="5" d="M110 372 L112 470 M150 372 L148 470 M112 482 L114 535 M148 482 L146 535"/>',[150,440]],
+ ["msk","joints","Joints (knees)",'<circle cx="112" cy="476" r="6"/><circle cx="148" cy="476" r="6"/>',[148,476]]
+];
+const SILHOUETTE = '<circle cx="130" cy="55" r="38"/><rect x="116" y="88" width="28" height="26" rx="6"/><path d="M92 112 Q130 104 168 112 L190 120 Q202 128 202 150 L206 250 L214 330 Q215 343 204 345 L196 345 L188 250 L184 178 L180 186 L178 330 L180 352 L166 545 L140 545 L134 382 L126 382 L120 545 L94 545 L80 352 L82 330 L80 186 L76 178 L72 250 L64 345 L56 345 Q45 343 46 330 L54 250 L58 150 Q58 128 70 120 Z"/>';
+
+function bodySVG(sel, pick, vb, labels){
+  let h = `<svg viewBox="${vb||'0 0 260 560'}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Human body diagram" class="${sel?'has-sel':''}">`;
+  h += `<g class="skin organ-skin ${sel==='skin'?'on':''}" data-sys="skin" data-part="skinP" data-label="Skin" style="cursor:pointer;--c-int:${SYS.skin.c}">${SILHOUETTE}</g>`;
+  O.forEach(([sys,part,label,svg],i)=>{
+    const on = sel===sys ? ' on':'';
+    const pk = pick===part ? ' pick':'';
+    h += `<g class="organ${on}${pk}" tabindex="0" role="button" aria-label="${label}" data-sys="${sys}" data-part="${part}" data-label="${label}" fill="${SYS[sys].c}" stroke="${SYS[sys].c}" >${svg.replace(/stroke-width="([\d.]+)"/g,'stroke-width="$1" style="stroke:'+SYS[sys].c+'"')}</g>`;
+  });
+  if(labels){
+    O.filter(o=>o[0]===sel).forEach(([,,label,,[x,y]])=>{
+      const lx = x+14;
+      h += `<line class="zline" x1="${x}" y1="${y}" x2="${lx}" y2="${y}"/><text class="zlabel" x="${lx+2}" y="${y+2.5}">${label}</text>`;
+    });
+  }
+  return h+'</svg>';
+}
+
+let cur="cardio", curPart=null;
+const $=id=>document.getElementById(id);
+
+function select(sys, part, flashDrug){
+  cur=sys; curPart=part||null;
+  const s=SYS[sys];
+  document.documentElement.style.setProperty('--c',s.c);
+  $('bodyMain').innerHTML = bodySVG(sys,curPart);
+  // zoom: widen viewBox a little to the right for labels
+  const [x,y,w,hh]=s.vb.split(' ').map(Number);
+  $('sZoom').innerHTML = sys==='skin' ? bodySVG(sys,curPart,s.vb,false) : bodySVG(sys,curPart,`${x} ${y} ${w+45} ${hh}`,true);
+  $('sEyebrow').textContent = `System ${S.indexOf(s)+1} of ${S.length}`;
+  $('sName').innerHTML = `<span class="dot"></span>${s.name}`;
+  $('sPlain').textContent = s.plain;
+  const partLabels = Object.fromEntries(O.map(o=>[o[1],o[2]])); partLabels.skinP="Skin";
+  $('sParts').innerHTML = Object.keys(s.parts).map(k=>`<button type="button" class="part${k===curPart?' pick':''}" data-part="${k}">${partLabels[k]||k}</button>`).join('');
+  $('sPartInfo').innerHTML = curPart && s.parts[curPart] ? `<b>${partLabels[curPart]}:</b> ${s.parts[curPart]}` : 'Tap a body part to see what it does.';
+  $('sRoots').innerHTML = s.roots.map(([r,m])=>`<div class="root"><code>${r}</code><span>${m}</span></div>`).join('');
+  $('sDrugs').innerHTML = s.drugs.map(([cls,suf,ex,use,sch])=>`<tr data-ex="${ex.toLowerCase()}"><td><b>${cls}</b>${sch?`<span class="sched">C-${sch===2?'II':'IV'}</span>`:''}<div class="use">${use}</div></td><td class="suffix">${suf}</td><td class="ex">${ex}</td></tr>`).join('');
+  $('sTip').textContent = s.tip;
+  document.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed', c.dataset.sys===sys));
+  if(flashDrug){
+    const row=[...$('sDrugs').rows].find(r=>r.dataset.ex.includes(flashDrug));
+    if(row){row.classList.add('flash');row.scrollIntoView({block:'nearest',behavior:'smooth'})}
+  }
+  try{localStorage.setItem('atlas-sys',sys)}catch(e){}
+}
+
+$('chips').innerHTML = S.map(s=>`<button type="button" class="chip" data-sys="${s.id}" style="--c:${s.c}" aria-pressed="false"><i></i>${s.name}</button>`).join('');
+$('chips').addEventListener('click',e=>{const b=e.target.closest('.chip'); if(b) select(b.dataset.sys)});
+$('overview').innerHTML = S.map(s=>`<button type="button" class="ov" data-sys="${s.id}" style="--c:${s.c}"><h3>${s.name}</h3><p>${Object.keys(s.parts).length} parts · ${s.drugs.length} drug classes</p><div class="sx">${s.drugs.map(d=>d[1]).filter(x=>x.startsWith('-')||x.endsWith('-')).slice(0,3).join('  ')}</div></button>`).join('');
+$('overview').addEventListener('click',e=>{const b=e.target.closest('.ov'); if(b){select(b.dataset.sys);$('figure').scrollIntoView({behavior:'smooth',block:'start'})}});
+$('sParts').addEventListener('click',e=>{const b=e.target.closest('.part'); if(b) select(cur,b.dataset.part)});
+
+function organClick(e){
+  const g=e.target.closest('[data-sys]'); if(!g) return;
+  select(g.dataset.sys,g.dataset.part);
+}
+['bodyMain','sZoom'].forEach(id=>{
+  $(id).addEventListener('click',organClick);
+  $(id).addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();organClick(e)}});
+});
+const tip=$('tip'), fig=$('figure');
+$('bodyMain').addEventListener('mousemove',e=>{
+  const g=e.target.closest('[data-label]');
+  if(!g){tip.hidden=true;return}
+  const r=fig.getBoundingClientRect();
+  tip.textContent=`${g.dataset.label} · ${SYS[g.dataset.sys].name}`;
+  tip.style.left=(e.clientX-r.left)+'px'; tip.style.top=(e.clientY-r.top)+'px'; tip.hidden=false;
+});
+$('bodyMain').addEventListener('mouseleave',()=>tip.hidden=true);
+
+/* finder */
+const INDEX=[];
+S.forEach(s=>{
+  s.drugs.forEach(d=>{d[2].split(/,\s*/).forEach(n=>INDEX.push({t:n,sys:s.id,kind:d[0],key:n.toLowerCase()})); if(d[1]!=='varies'&&d[1]!=='none') d[1].split(/,\s*/).forEach(sx=>INDEX.push({t:sx,sys:s.id,kind:d[0],key:sx.toLowerCase(),drug:d[2].split(',')[0].toLowerCase()}))});
+  s.roots.forEach(([r,m])=>INDEX.push({t:r,sys:s.id,kind:m,key:r.toLowerCase()}));
+});
+$('find').addEventListener('input',e=>{
+  const q=e.target.value.trim().toLowerCase().replace(/^-/,'');
+  if(q.length<2){$('hits').innerHTML='';return}
+  const m=INDEX.filter(x=>x.key.replace(/^-/,'').includes(q)).slice(0,8);
+  $('hits').innerHTML = m.length ? m.map((x,i)=>`<button type="button" class="hit" data-i="${INDEX.indexOf(x)}"><b>${x.t}</b> · ${SYS[x.sys].name}</button>`).join('') : '<span class="use">No match yet. Try another spelling.</span>';
+});
+$('hits').addEventListener('click',e=>{const b=e.target.closest('.hit'); if(!b)return; const x=INDEX[b.dataset.i]; select(x.sys,null,x.drug||x.key)});
+
+/* quiz */
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+function pickOthers(pool,right,n){return shuffle(pool.filter(x=>x!==right)).slice(0,n)}
+function makeQ(){
+  const s=rnd(S), type=rnd(['drug','root','suffix','organ']);
+  if(type==='drug'){
+    const d=rnd(s.drugs), name=rnd(d[2].split(/,\s*/));
+    const opts=shuffle([s.name,...pickOthers(S.map(x=>x.name),s.name,3)]);
+    return {q:`<span class="mono">${name}</span> mainly treats which body system?`,opts,a:s.name,why:`${name} is a ${d[0].toLowerCase()} drug, used for ${d[3].toLowerCase()}.`,sys:s.id};
+  }
+  if(type==='root'){
+    const [r,m]=rnd(s.roots);
+    const all=[...new Set(S.flatMap(x=>x.roots.map(y=>y[1])))];
+    return {q:`What does the root <span class="mono">${r}</span> mean?`,opts:shuffle([m,...pickOthers(all,m,3)]),a:m,why:`${r} = ${m} (${s.name} system).`,sys:s.id};
+  }
+  if(type==='suffix'){
+    const ds=s.drugs.filter(d=>d[1].startsWith('-')); if(!ds.length) return makeQ();
+    const d=rnd(ds); const all=[...new Set(S.flatMap(x=>x.drugs.map(y=>y[0])))];
+    return {q:`Drugs ending in <span class="mono">${d[1]}</span> belong to which class?`,opts:shuffle([d[0],...pickOthers(all,d[0],3)]),a:d[0],why:`${d[1]} → ${d[0]}, e.g. ${d[2].split(',')[0]}.`,sys:s.id};
+  }
+  const o=rnd(O.filter(x=>x[0]===s.id)); if(!o) return makeQ();
+  return {q:`The <span class="mono">${o[2].toLowerCase()}</span> belong${/s$/.test(o[2])&&o[2]!=='Pancreas'?'':'s'} to which system?`,opts:shuffle([s.name,...pickOthers(S.map(x=>x.name),s.name,3)]),a:s.name,why:`${o[2]}: ${s.parts[o[1]]}`,sys:s.id};
+}
+let qn=0, right=0, best=null, curQ;
+try{const b=localStorage.getItem('atlas-best'); if(b!==null) best=+b}catch(e){}
+function showBest(){$('qBest').textContent = best===null?'–':`${best} / 10`}
+function nextQ(){
+  if(qn===10){
+    if(best===null||right>best){best=right;try{localStorage.setItem('atlas-best',best)}catch(e){}}
+    showBest();
+    $('qText').innerHTML=`Round done: ${right} out of 10.`;
+    $('qOpts').innerHTML=''; $('qFb').textContent = right>=8?'Great work. You are exam-ready on these.':'Review the systems you missed, then try again.';
+    $('qNext').textContent='Start a new round'; $('qNext').hidden=false; qn=0; right=0; return;
+  }
+  curQ=makeQ();
+  $('qText').innerHTML=`${qn+1}. ${curQ.q}`;
+  $('qOpts').innerHTML=curQ.opts.map((o,i)=>`<button type="button" class="opt" id="opt${i}">${o}</button>`).join('');
+  $('qFb').textContent=''; $('qNext').hidden=true; $('qNext').textContent='Next question';
+}
+$('qOpts').addEventListener('click',e=>{
+  const b=e.target.closest('.opt'); if(!b||b.disabled)return;
+  const ok=b.textContent===curQ.a; qn++; if(ok) right++;
+  [...$('qOpts').children].forEach(x=>{x.disabled=true; if(x.textContent===curQ.a) x.classList.add('right')});
+  if(!ok) b.classList.add('wrong');
+  $('qFb').innerHTML=(ok?'<b style="color:var(--good)">Correct.</b> ':'<b style="color:var(--bad)">Not quite.</b> ')+curQ.why+` <button type="button" class="hit" id="qShow">Show on body</button>`;
+  $('qScore').textContent=`${right} / ${qn}`; $('qBar').style.width=(qn*10)+'%';
+  $('qNext').hidden=false; $('qNext').focus();
+});
+$('qFb').addEventListener('click',e=>{if(e.target.id==='qShow'){select(curQ.sys);$('figure').scrollIntoView({behavior:'smooth'})}});
+$('qNext').addEventListener('click',()=>{if(qn===0){$('qScore').textContent='0 / 0';$('qBar').style.width='0'} nextQ()});
+
+let start='cardio'; try{const s=localStorage.getItem('atlas-sys'); if(s&&SYS[s]) start=s}catch(e){}
+select(start,null); showBest(); nextQ();
+</script>
+
+</body></html>
